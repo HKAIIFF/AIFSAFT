@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAFT Agreement & Wallet Verification - AIF Token</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;900&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+        
+        .accent-gradient {
+            background: linear-gradient(135deg, #e94560 0%, #ff5678 100%);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: linear-gradient(90deg, #e94560, #ff5678);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            margin: 12px auto 0;
+            background: linear-gradient(90deg, #e94560, #ff5678);
+        }
+        
+        .document-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .document-card:hover {
+            transform: translateY(-5px);
+            border-color: #e94560;
+            box-shadow: 0 10px 25px -5px rgba(233, 69, 96, 0.25);
+        }
+        
+        .lang-btn {
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(45deg, #e94560, #ff5678);
+            border-color: transparent;
+        }
+
+        .hidden { display: none; }
+        
+        .animated-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+        
+        .animated-bg span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
+            border-radius: 50%;
+        }
+        
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        .step-card {
+            position: relative;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(233, 69, 96, 0.2);
+        }
+        
+        .step-number {
+            background: linear-gradient(45deg, #e94560, #ff5678);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #e94560, #ff5678);
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-pending { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+        .status-processing { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+        .status-approved { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .status-rejected { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-gray-900 bg-opacity-90 backdrop-filter backdrop-blur-lg shadow-lg">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <a href="#" class="flex items-center">
+                    <span class="text-2xl font-bold"><span class="text-pink-500">AIF</span> TOKEN</span>
+                </a>
+                
+                <div class="hidden md:flex space-x-6 items-center">
+                    <a href="#saft" class="nav-link text-gray-300 hover:text-white transition">SAFT Agreement</a>
+                    <a href="#wallet" class="nav-link text-gray-300 hover:text-white transition">Wallet Verification</a>
+                    <a href="#contact" class="nav-link text-gray-300 hover:text-white transition">Contact</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex space-x-2">
+                        <button class="lang-btn active px-3 py-1 rounded-full text-sm" onclick="switchLanguage('en')">EN</button>
+                        <button class="lang-btn px-3 py-1 rounded-full text-sm" onclick="switchLanguage('zh')">中文</button>
+                    </div>
+                </div>
+                
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-300 hover:text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="mobile-menu" class="md:hidden hidden mt-3 pb-2">
+                <div class="flex space-x-2 mb-3">
+                    <button class="lang-btn active px-3 py-1 rounded-full text-sm" onclick="switchLanguage('en')">EN</button>
+                    <button class="lang-btn px-3 py-1 rounded-full text-sm" onclick="switchLanguage('zh')">中文</button>
+                </div>
+                <a href="#saft" class="block py-2 text-gray-300 hover:text-white">
+                    <span class="en-content">SAFT Agreement</span>
+                    <span class="zh-content hidden">SAFT协议</span>
+                </a>
+                <a href="#wallet" class="block py-2 text-gray-300 hover:text-white">
+                    <span class="en-content">Wallet Verification</span>
+                    <span class="zh-content hidden">钱包验证</span>
+                </a>
+                <a href="#contact" class="block py-2 text-gray-300 hover:text-white">
+                    <span class="en-content">Contact</span>
+                    <span class="zh-content hidden">联系我们</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center gradient-bg pt-20">
+        <div class="animated-bg">
+            <span style="--i:11; left: 10%; animation-delay: 0s;"></span>
+            <span style="--i:17; left: 20%; animation-delay: 2s;"></span>
+            <span style="--i:15; left: 30%; animation-delay: 4s;"></span>
+            <span style="--i:9; left: 40%; animation-delay: 6s;"></span>
+            <span style="--i:13; left: 50%; animation-delay: 8s;"></span>
+            <span style="--i:20; left: 60%; animation-delay: 10s;"></span>
+            <span style="--i:12; left: 70%; animation-delay: 12s;"></span>
+            <span style="--i:18; left: 80%; animation-delay: 14s;"></span>
+            <span style="--i:14; left: 90%; animation-delay: 16s;"></span>
+        </div>
+        
+        <div class="container mx-auto px-6 z-10">
+            <div class="text-center">
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-6">
+                    <span class="en-content">Legal Documentation</span>
+                    <span class="zh-content hidden">法律文档</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 mb-6">
+                    <span class="en-content">SAFT Agreement & Wallet Verification</span>
+                    <span class="zh-content hidden">SAFT协议与钱包验证</span>
+                </p>
+                <p class="text-gray-400 mb-8 max-w-2xl mx-auto">
+                    <span class="en-content">Complete legal framework for AIF Token investment participation</span>
+                    <span class="zh-content hidden">AIF代币投资参与的完整法律框架</span>
+                </p>
+                
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center">
+                    <a href="#saft" class="py-3 px-8 accent-gradient rounded-full font-medium text-white shadow-lg transform transition hover:scale-105">
+                        <span class="en-content">View SAFT Agreement</span>
+                        <span class="zh-content hidden">查看SAFT协议</span>
+                    </a>
+                    <a href="#wallet" class="py-3 px-8 border border-pink-500 rounded-full font-medium text-white shadow-lg transform transition hover:scale-105 hover:bg-pink-500 hover:bg-opacity-20">
+                        <span class="en-content">Wallet Verification</span>
+                        <span class="zh-content hidden">钱包验证</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SAFT Agreement Section -->
+    <section id="saft" class="py-20 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold section-title inline-block">
+                    <span class="en-content">SAFT Agreement</span>
+                    <span class="zh-content hidden">SAFT协议</span>
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto mt-4">
+                    <span class="en-content">Simple Agreement for Future Tokens - Legal framework for AIF Token investment</span>
+                    <span class="zh-content hidden">简单股权代币协议 - AIF代币投资的法律框架</span>
+                </p>
+            </div>
+            
+            <!-- Agreement Overview -->
+            <div class="document-card rounded-xl p-8 mb-8">
+                <h3 class="text-2xl font-bold mb-6">
+                    <span class="en-content">📋 Agreement Overview</span>
+                    <span class="zh-content hidden">📋 协议概述</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-lg font-bold mb-4 text-pink-500">
+                            <span class="en-content">Issuer Information</span>
+                            <span class="zh-content hidden">发行方信息</span>
+                        </h4>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="text-sm text-gray-400 mb-1">
+                                    <span class="en-content">Company Name (English)</span>
+                                    <span class="zh-content hidden">公司名称（英文）</span>
+                                </div>
+                                <div class="font-medium">HONG KONG AI INTERNATIONAL FILM FESTIVAL LIMITED</div>
+                            </div>
+                            <div class="p-3 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="text-sm text-gray-400 mb-1">
+                                    <span class="en-content">Company Name (Chinese)</span>
+                                    <span class="zh-content hidden">公司名称（中文）</span>
+                                </div>
+                                <div class="font-medium">香港人工智能国际电影节协会有限公司</div>
+                            </div>
+                            <div class="p-3 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="text-sm text-gray-400 mb-1">Business Registration No.</div>
+                                <div class="font-medium font-mono">77536113-000-12-24-5</div>
+                            </div>
+                            <div class="p-3 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="text-sm text-gray-400 mb-1">
+                                    <span class="en-content">Jurisdiction</span>
+                                    <span class="zh-content hidden">司法管辖区</span>
+                                </div>
+                                <div class="font-medium">
+                                    <span class="en-content">Hong Kong SAR</span>
+                                    <span class="zh-content hidden">香港特别行政区</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-bold mb-4 text-pink-500">
+                            <span class="en-content">Token Information</span>
+                            <span class="zh-content hidden">代币信息</span>
+                        </h4>
+                        <div class="space-y-3">
+                            <div class="p-3 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="text-sm text-gray-400 mb-1">
+                                    <span class="en-content">Token Name</span>
+                                    <span class="zh-content hidden">代币名称</span>
+                                </div>
+                                <div class="font-medium">Hong Kong AI International Film Festival Token</div>
+                            </div>
+                            <div class="p-3 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="text-sm text-gray-400 mb-1">
+                                    <span class="en-content">Token Symbol</span>
+                                    <span class="zh-content hidden">代币符号</span>
+                                </div>
+                                <div class="font-medium">AIF</div>
+                            </div>
+                            <div class="p-3 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="text-sm text-gray-400 mb-1">
+                                    <span class="en-content">Total Supply</span>
+                                    <span class="zh-content hidden">总供应量</span>
+                                </div>
+                                <div class="font-medium">10,000,000,000 AIF</div>
+                            </div>
+                            <div class="p-3 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="text-sm text-gray-400 mb-1">
+                                    <span class="en-content">Private Sale Price</span>
+                                    <span class="zh-content hidden">私募价格</span>
+                                </div>
+                                <div class="font-medium text-pink-500">$0.05 per AIF</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Investment Terms -->
+            <div class="document-card rounded-xl p-8 mb-8">
+                <h3 class="text-2xl font-bold mb-6">
+                    <span class="en-content">💰 Investment Terms</span>
+                    <span class="zh-content hidden">💰 投资条款</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-lg font-bold mb-4 text-pink-500">
+                            <span class="en-content">Accepted Cryptocurrencies</span>
+                            <span class="zh-content hidden">接受的加密货币</span>
+                        </h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center p-3 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <i class="fab fa-ethereum text-2xl text-blue-400 mr-3"></i>
+                                <div>
+                                    <div class="font-medium">USDT (Tether)</div>
+                                    <div class="text-sm text-gray-400">ERC-20 Standard</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center p-3 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <i class="fab fa-ethereum text-2xl text-blue-400 mr-3"></i>
+                                <div>
+                                    <div class="font-medium">USDC (USD Coin)</div>
+                                    <div class="text-sm text-gray-400">ERC-20 Standard</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center p-3 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <i class="fab fa-ethereum text-2xl text-blue-400 mr-3"></i>
+                                <div>
+                                    <div class="font-medium">ETH (Ethereum)</div>
+                                    <div class="text-sm text-gray-400">Native Token</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center p-3 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <i class="fab fa-bitcoin text-2xl text-orange-400 mr-3"></i>
+                                <div>
+                                    <div class="font-medium">BTC (Bitcoin)</div>
+                                    <div class="text-sm text-gray-400">Native Token</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-bold mb-4 text-pink-500">
+                            <span class="en-content">Vesting Schedule</span>
+                            <span class="zh-content hidden">解锁时间表</span>
+                        </h4>
+                        <div class="space-y-4">
+                            <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">
+                                        <span class="en-content">Cliff Period</span>
+                                        <span class="zh-content hidden">锁定期</span>
+                                    </span>
+                                    <span class="text-pink-500 font-bold">6 Months</span>
+                                </div>
+                                <div class="text-sm text-gray-400">
+                                    <span class="en-content">No token release during cliff period</span>
+                                    <span class="zh-content hidden">锁定期内不释放代币</span>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">
+                                        <span class="en-content">Vesting Period</span>
+                                        <span class="zh-content hidden">解锁期</span>
+                                    </span>
+                                    <span class="text-pink-500 font-bold">24 Months</span>
+                                </div>
+                                <div class="text-sm text-gray-400">
+                                    <span class="en-content">Linear release after cliff period</span>
+                                    <span class="zh-content hidden">锁定期后线性释放</span>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">
+                                        <span class="en-content">Monthly Release</span>
+                                        <span class="zh-content hidden">月释放率</span>
+                                    </span>
+                                    <span class="text-pink-500 font-bold">4.17%</span>
+                                </div>
+                                <div class="text-sm text-gray-400">
+                                    <span class="en-content">Equal monthly distribution</span>
+                                    <span class="zh-content hidden">等额月度分配</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Risk Disclosure -->
+            <div class="document-card rounded-xl p-8 mb-8">
+                <h3 class="text-2xl font-bold mb-6">
+                    <span class="en-content">⚠️ Risk Disclosure</span>
+                    <span class="zh-content hidden">⚠️ 风险披露</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="p-4 bg-red-900 bg-opacity-30 border border-red-500 border-opacity-50 rounded-lg">
+                            <h4 class="font-bold text-red-400 mb-2">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>
+                                <span class="en-content">Total Loss Risk</span>
+                                <span class="zh-content hidden">完全损失风险</span>
+                            </h4>
+                            <p class="text-sm text-gray-300">
+                                <span class="en-content">You may lose your entire investment</span>
+                                <span class="zh-content hidden">您可能损失全部投资</span>
+                            </p>
+                        </div>
+                        <div class="p-4 bg-yellow-900 bg-opacity-30 border border-yellow-500 border-opacity-50 rounded-lg">
+                            <h4 class="font-bold text-yellow-400 mb-2">
+                                <i class="fas fa-code mr-2"></i>
+                                <span class="en-content">Technology Risk</span>
+                                <span class="zh-content hidden">技术风险</span>
+                            </h4>
+                            <p class="text-sm text-gray-300">
+                                <span class="en-content">Smart contract vulnerabilities and blockchain risks</span>
+                                <span class="zh-content hidden">智能合约漏洞和区块链风险</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-orange-900 bg-opacity-30 border border-orange-500 border-opacity-50 rounded-lg">
+                            <h4 class="font-bold text-orange-400 mb-2">
+                                <i class="fas fa-balance-scale mr-2"></i>
+                                <span class="en-content">Regulatory Risk</span>
+                                <span class="zh-content hidden">监管风险</span>
+                            </h4>
+                            <p class="text-sm text-gray-300">
+                                <span class="en-content">Changes in regulations may affect token value</span>
+                                <span class="zh-content hidden">法规变化可能影响代币价值</span>
+                            </p>
+                        </div>
+                        <div class="p-4 bg-purple-900 bg-opacity-30 border border-purple-500 border-opacity-50 rounded-lg">
+                            <h4 class="font-bold text-purple-400 mb-2">
+                                <i class="fas fa-chart-line mr-2"></i>
+                                <span class="en-content">Market Risk</span>
+                                <span class="zh-content hidden">市场风险</span>
+                            </h4>
+                            <p class="text-sm text-gray-300">
+                                <span class="en-content">High volatility in cryptocurrency markets</span>
+                                <span class="zh-content hidden">加密货币市场高度波动</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                    <h4 class="font-bold text-red-400 mb-2">
+                        <span class="en-content">🚨 Important Notice</span>
+                        <span class="zh-content hidden">🚨 重要声明</span>
+                    </h4>
+                    <p class="text-sm text-gray-300">
+                        <span class="en-content">This is a legally binding agreement. Please read all terms carefully and seek professional legal advice if necessary. Investment involves substantial risks.</span>
+                        <span class="zh-content hidden">这是具有法律约束力的协议。请仔细阅读所有条款，必要时寻求专业法律建议。投资涉及重大风险。</span>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Download Links -->
+            <div class="text-center">
+                <div class="inline-flex space-x-4">
+                    <a href="mailto:legal@aif.market" class="py-3 px-8 accent-gradient rounded-full font-medium text-white shadow-lg transform transition hover:scale-105">
+                        <i class="fas fa-download mr-2"></i>
+                        <span class="en-content">Request SAFT Document</span>
+                        <span class="zh-content hidden">申请SAFT文档</span>
+                    </a>
+                    <a href="mailto:legal@aif.market" class="py-3 px-8 border border-pink-500 rounded-full font-medium text-white shadow-lg transform transition hover:scale-105 hover:bg-pink-500 hover:bg-opacity-20">
+                        <i class="fas fa-question-circle mr-2"></i>
+                        <span class="en-content">Legal Consultation</span>
+                        <span class="zh-content hidden">法律咨询</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wallet Verification Section -->
+    <section id="wallet" class="py-20 gradient-bg relative">
+        <div class="animated-bg">
+            <span style="--i:15; left: 15%; animation-delay: 2s;"></span>
+            <span style="--i:18; left: 40%; animation-delay: 6s;"></span>
+            <span style="--i:13; left: 65%; animation-delay: 8s;"></span>
+            <span style="--i:16; left: 25%; animation-delay: 11s;"></span>
+            <span style="--i:19; left: 85%; animation-delay: 17s;"></span>
+        </div>
+        
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold section-title inline-block">
+                    <span class="en-content">Wallet Address Verification</span>
+                    <span class="zh-content hidden">钱包地址验证</span>
+                </h2>
+                <p class="text-gray-300 max-w-2xl mx-auto mt-4">
+                    <span class="en-content">Secure verification process to ensure investment fund safety and compliance</span>
+                    <span class="zh-content hidden">安全验证流程确保投资资金安全和合规要求</span>
+                </p>
+            </div>
+            
+            <!-- Official Receiving Wallets -->
+            <div class="document-card rounded-xl p-8 mb-8">
+                <h3 class="text-2xl font-bold mb-6">
+                    <span class="en-content">🏦 Official Receiving Wallets</span>
+                    <span class="zh-content hidden">🏦 官方收款钱包</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-lg font-bold mb-4 text-pink-500">
+                            <span class="en-content">Ethereum Network</span>
+                            <span class="zh-content hidden">以太坊网络</span>
+                        </h4>
+                        <div class="space-y-3">
+                            <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium">USDT (ERC-20)</span>
+                                    <span class="status-badge status-pending">
+                                        <span class="en-content">Pending Deploy</span>
+                                        <span class="zh-content hidden">待部署</span>
+                                    </span>
+                                </div>
+                                <div class="text-xs text-gray-400 font-mono break-all">
+                                    0x[48-character address - to be provided]
+                                </div>
+                            </div>
+                            <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium">USDC (ERC-20)</span>
+                                    <span class="status-badge status-pending">
+                                        <span class="en-content">Pending Deploy</span>
+                                        <span class="zh-content hidden">待部署</span>
+                                    </span>
+                                </div>
+                                <div class="text-xs text-gray-400 font-mono break-all">
+                                    0x[48-character address - to be provided]
+                                </div>
+                            </div>
+                            <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium">ETH (Native)</span>
+                                    <span class="status-badge status-pending">
+                                        <span class="en-content">Pending Deploy</span>
+                                        <span class="zh-content hidden">待部署</span>
+                                    </span>
+                                </div>
+                                <div class="text-xs text-gray-400 font-mono break-all">
+                                    0x[48-character address - to be provided]
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-bold mb-4 text-pink-500">
+                            <span class="en-content">Bitcoin Network</span>
+                            <span class="zh-content hidden">比特币网络</span>
+                        </h4>
+                        <div class="space-y-3">
+                            <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="font-medium">BTC (SegWit)</span>
+                                    <span class="status-badge status-pending">
+                                        <span class="en-content">Pending Deploy</span>
+                                        <span class="zh-content hidden">待部署</span>
+                                    </span>
+                                </div>
+                                <div class="text-xs text-gray-400 font-mono break-all">
+                                    bc1[Bech32 format address - to be provided]
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h4 class="text-lg font-bold mb-4 mt-6 text-pink-500">
+                            <span class="en-content">Security Features</span>
+                            <span class="zh-content hidden">安全特性</span>
+                        </h4>
+                        <div class="space-y-2">
+                            <div class="flex items-center p-2 bg-gray-800 bg-opacity-40 rounded">
+                                <i class="fas fa-shield-alt text-green-400 mr-2"></i>
+                                <span class="text-sm">
+                                    <span class="en-content">3-of-5 Multi-signature</span>
+                                    <span class="zh-content hidden">3/5多重签名</span>
+                                </span>
+                            </div>
+                            <div class="flex items-center p-2 bg-gray-800 bg-opacity-40 rounded">
+                                <i class="fas fa-snowflake text-blue-400 mr-2"></i>
+                                <span class="text-sm">
+                                    <span class="en-content">Cold Storage Protection</span>
+                                    <span class="zh-content hidden">冷存储保护</span>
+                                </span>
+                            </div>
+                            <div class="flex items-center p-2 bg-gray-800 bg-opacity-40 rounded">
+                                <i class="fas fa-clock text-yellow-400 mr-2"></i>
+                                <span class="text-sm">
+                                    <span class="en-content">Time-lock Functionality</span>
+                                    <span class="zh-content hidden">时间锁定功能</span>
+                                </span>
+                            </div>
+                            <div class="flex items-center p-2 bg-gray-800 bg-opacity-40 rounded">
+                                <i class="fas fa-eye text-purple-400 mr-2"></i>
+                                <span class="text-sm">
+                                    <span class="en-content">Real-time Monitoring</span>
+                                    <span class="zh-content hidden">实时监控系统</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Verification Process -->
+            <div class="document-card rounded-xl p-8 mb-8">
+                <h3 class="text-2xl font-bold mb-6">
+                    <span class="en-content">🔍 Verification Process</span>
+                    <span class="zh-content hidden">🔍 验证流程</span>
+                </h3>
+                <div class="relative timeline pl-12">
+                    <div class="mb-8">
+                        <div class="absolute left-0 step-number">1</div>
+                        <div class="step-card rounded-lg p-6">
+                            <h4 class="text-lg font-bold mb-3 text-pink-500">
+                                <span class="en-content">Address Submission</span>
+                                <span class="zh-content hidden">地址提交</span>
+                            </h4>
+                            <p class="text-gray-300 mb-4">
+                                <span class="en-content">Submit your wallet address and basic investment information</span>
+                                <span class="zh-content hidden">提交您的钱包地址和基本投资信息</span>
+                            </p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <h5 class="font-medium mb-2">
+                                        <span class="en-content">Required Information:</span>
+                                        <span class="zh-content hidden">必填信息：</span>
+                                    </h5>
+                                    <ul class="text-sm text-gray-400 space-y-1">
+                                        <li>• <span class="en-content">Full name</span><span class="zh-content hidden">全名</span></li>
+                                        <li>• <span class="en-content">Investment amount</span><span class="zh-content hidden">投资金额</span></li>
+                                        <li>• <span class="en-content">Cryptocurrency type</span><span class="zh-content hidden">加密货币类型</span></li>
+                                        <li>• <span class="en-content">Wallet address</span><span class="zh-content hidden">钱包地址</span></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="font-medium mb-2">
+                                        <span class="en-content">Processing Time:</span>
+                                        <span class="zh-content hidden">处理时间：</span>
+                                    </h5>
+                                    <div class="text-pink-500 font-bold">
+                                        <span class="en-content">Instant</span>
+                                        <span class="zh-content hidden">即时</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <div class="absolute left-0 step-number">2</div>
+                        <div class="step-card rounded-lg p-6">
+                            <h4 class="text-lg font-bold mb-3 text-pink-500">
+                                <span class="en-content">Format Verification</span>
+                                <span class="zh-content hidden">格式验证</span>
+                            </h4>
+                            <p class="text-gray-300 mb-4">
+                                <span class="en-content">Automated validation of wallet address format and checksum</span>
+                                <span class="zh-content hidden">自动验证钱包地址格式和校验和</span>
+                            </p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <h5 class="font-medium mb-2">
+                                        <span class="en-content">Validation Rules:</span>
+                                        <span class="zh-content hidden">验证规则：</span>
+                                    </h5>
+                                    <ul class="text-sm text-gray-400 space-y-1">
+                                        <li>• <span class="en-content">Address format compliance</span><span class="zh-content hidden">地址格式合规</span></li>
+                                        <li>• <span class="en-content">Checksum verification</span><span class="zh-content hidden">校验和验证</span></li>
+                                        <li>• <span class="en-content">Network compatibility</span><span class="zh-content hidden">网络兼容性</span></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="font-medium mb-2">
+                                        <span class="en-content">Processing Time:</span>
+                                        <span class="zh-content hidden">处理时间：</span>
+                                    </h5>
+                                    <div class="text-pink-500 font-bold">
+                                        <span class="en-content">1 Hour</span>
+                                        <span class="zh-content hidden">1小时</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <div class="absolute left-0 step-number">3</div>
+                        <div class="step-card rounded-lg p-6">
+                            <h4 class="text-lg font-bold mb-3 text-pink-500">
+                                <span class="en-content">Ownership Verification</span>
+                                <span class="zh-content hidden">所有权验证</span>
+                            </h4>
+                            <p class="text-gray-300 mb-4">
+                                <span class="en-content">Prove wallet ownership through message signing or test transaction</span>
+                                <span class="zh-content hidden">通过消息签名或测试转账证明钱包所有权</span>
+                            </p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <h5 class="font-medium mb-2">
+                                        <span class="en-content">Verification Methods:</span>
+                                        <span class="zh-content hidden">验证方法：</span>
+                                    </h5>
+                                    <ul class="text-sm text-gray-400 space-y-1">
+                                        <li>• <span class="en-content">Message signature</span><span class="zh-content hidden">消息签名</span></li>
+                                        <li>• <span class="en-content">Small test transaction</span><span class="zh-content hidden">小额测试转账</span></li>
+                                        <li>• <span class="en-content">Exchange verification (if applicable)</span><span class="zh-content hidden">交易所验证（如适用）</span></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="font-medium mb-2">
+                                        <span class="en-content">Processing Time:</span>
+                                        <span class="zh-content hidden">处理时间：</span>
+                                    </h5>
+                                    <div class="text-pink-500 font-bold">
+                                        <span class="en-content">24 Hours</span>
+                                        <span class="zh-content hidden">24小时</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <div class="absolute left-0 step-number">4</div>
+                        <div class="step-card rounded-lg p-6">
+                            <h4 class="text-lg font-bold mb-3 text-pink-500">
+                                <span class="en-content">Compliance Review</span>
+                                <span class="zh-content hidden">合规审查</span>
+                            </h4>
+                            <p class="text-gray-300 mb-4">
+                                <span class="en-content">AML/KYC verification and blockchain analysis</span>
+                                <span class="zh-content hidden">反洗钱/了解客户验证和区块链分析</span>
+                            </p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <h5 class="font-medium mb-2">
+                                        <span class="en-content">Review Process:</span>
+                                        <span class="zh-content hidden">审查流程：</span>
+                                    </h5>
+                                    <ul class="text-sm text-gray-400 space-y-1">
+                                        <li>• <span class="en-content">Transaction history analysis</span><span class="zh-content hidden">交易历史分析</span></li>
+                                        <li>• <span class="en-content">Sanctions list screening</span><span class="zh-content hidden">制裁名单筛查</span></li>
+                                        <li>• <span class="en-content">Source of funds verification</span><span class="zh-content hidden">资金来源验证</span></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="font-medium mb-2">
+                                        <span class="en-content">Processing Time:</span>
+                                        <span class="zh-content hidden">处理时间：</span>
+                                    </h5>
+                                    <div class="text-pink-500 font-bold">
+                                        <span class="en-content">2-3 Business Days</span>
+                                        <span class="zh-content hidden">2-3个工作日</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <div class="absolute left-0 step-number">5</div>
+                        <div class="step-card rounded-lg p-6">
+                            <h4 class="text-lg font-bold mb-3 text-pink-500">
+                                <span class="en-content">Final Approval</span>
+                                <span class="zh-content hidden">最终批准</span>
+                            </h4>
+                            <p class="text-gray-300 mb-4">
+                                <span class="en-content">Risk assessment and senior management approval</span>
+                                <span class="zh-content hidden">风险评估和高级管理层批准</span>
+                            </p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <h5 class="font-medium mb-2">
+                                        <span class="en-content">Approval Criteria:</span>
+                                        <span class="zh-content hidden">批准标准：</span>
+                                    </h5>
+                                    <ul class="text-sm text-gray-400 space-y-1">
+                                        <li>• <span class="en-content">Risk score assessment</span><span class="zh-content hidden">风险评分评估</span></li>
+                                        <li>• <span class="en-content">Compliance verification</span><span class="zh-content hidden">合规验证</span></li>
+                                        <li>• <span class="en-content">Management review</span><span class="zh-content hidden">管理层审查</span></li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h5 class="font-medium mb-2">
+                                        <span class="en-content">Processing Time:</span>
+                                        <span class="zh-content hidden">处理时间：</span>
+                                    </h5>
+                                    <div class="text-pink-500 font-bold">
+                                        <span class="en-content">1 Business Day</span>
+                                        <span class="zh-content hidden">1个工作日</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 p-4 bg-green-900 bg-opacity-30 border border-green-500 border-opacity-50 rounded-lg">
+                    <h4 class="font-bold text-green-400 mb-2">
+                        <i class="fas fa-clock mr-2"></i>
+                        <span class="en-content">Total Processing Time</span>
+                        <span class="zh-content hidden">总处理时间</span>
+                    </h4>
+                    <p class="text-lg font-bold text-green-400">
+                        <span class="en-content">5-7 Business Days</span>
+                        <span class="zh-content hidden">5-7个工作日</span>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Fee Structure -->
+            <div class="document-card rounded-xl p-8 mb-8">
+                <h3 class="text-2xl font-bold mb-6">
+                    <span class="en-content">💳 Fee Structure</span>
+                    <span class="zh-content hidden">💳 费用结构</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-lg font-bold mb-4 text-pink-500">
+                            <span class="en-content">Network Fees</span>
+                            <span class="zh-content hidden">网络费用</span>
+                        </h4>
+                        <div class="space-y-3">
+                            <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">
+                                        <span class="en-content">Test Transaction Fees</span>
+                                        <span class="zh-content hidden">测试转账费用</span>
+                                    </span>
+                                    <span class="text-yellow-500 font-bold">
+                                        <span class="en-content">Paid by Investor</span>
+                                        <span class="zh-content hidden">投资者承担</span>
+                                    </span>
+                                </div>
+                                <p class="text-sm text-gray-400">
+                                    <span class="en-content">Actual gas fees for Ethereum, miner fees for Bitcoin</span>
+                                    <span class="zh-content hidden">以太坊实际Gas费用，比特币矿工费用</span>
+                                </p>
+                            </div>
+                            <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">
+                                        <span class="en-content">Investment Transaction Fees</span>
+                                        <span class="zh-content hidden">投资转账费用</span>
+                                    </span>
+                                    <span class="text-yellow-500 font-bold">
+                                        <span class="en-content">Paid by Investor</span>
+                                        <span class="zh-content hidden">投资者承担</span>
+                                    </span>
+                                </div>
+                                <p class="text-sm text-gray-400">
+                                    <span class="en-content">Standard gas price + 20% for Ethereum, medium priority + 10% for Bitcoin</span>
+                                    <span class="zh-content hidden">以太坊标准Gas价格+20%，比特币中等优先级+10%</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-lg font-bold mb-4 text-pink-500">
+                            <span class="en-content">Service Fees</span>
+                            <span class="zh-content hidden">服务费用</span>
+                        </h4>
+                        <div class="space-y-3">
+                            <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">
+                                        <span class="en-content">Individual Investors</span>
+                                        <span class="zh-content hidden">个人投资者</span>
+                                    </span>
+                                    <span class="text-green-500 font-bold">
+                                        <span class="en-content">FREE</span>
+                                        <span class="zh-content hidden">免费</span>
+                                    </span>
+                                </div>
+                                <p class="text-sm text-gray-400">
+                                    <span class="en-content">No verification service fee for individual investors</span>
+                                    <span class="zh-content hidden">个人投资者无验证服务费</span>
+                                </p>
+                            </div>
+                            <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">
+                                        <span class="en-content">Institutional Investors</span>
+                                        <span class="zh-content hidden">机构投资者</span>
+                                    </span>
+                                    <span class="text-pink-500 font-bold">$50</span>
+                                </div>
+                                <p class="text-sm text-gray-400">
+                                    <span class="en-content">Equivalent cryptocurrency value</span>
+                                    <span class="zh-content hidden">等值加密货币</span>
+                                </p>
+                            </div>
+                            <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="font-medium">
+                                        <span class="en-content">Express Processing</span>
+                                        <span class="zh-content hidden">加急处理</span>
+                                    </span>
+                                    <span class="text-pink-500 font-bold">$200</span>
+                                </div>
+                                <p class="text-sm text-gray-400">
+                                    <span class="en-content">2 business days completion</span>
+                                    <span class="zh-content hidden">2个工作日完成</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Status Tracking -->
+            <div class="document-card rounded-xl p-8 mb-8">
+                <h3 class="text-2xl font-bold mb-6">
+                    <span class="en-content">📊 Status Tracking</span>
+                    <span class="zh-content hidden">📊 状态跟踪</span>
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="text-center p-4 bg-gray-800 bg-opacity-40 rounded-lg">
+                        <div class="status-badge status-pending mb-2">
+                            <span class="en-content">Pending</span>
+                            <span class="zh-content hidden">待提交</span>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <span class="en-content">Awaiting submission</span>
+                            <span class="zh-content hidden">等待提交</span>
+                        </p>
+                    </div>
+                    
+                    <div class="text-center p-4 bg-gray-800 bg-opacity-40 rounded-lg">
+                        <div class="status-badge status-processing mb-2">
+                            <span class="en-content">Processing</span>
+                            <span class="zh-content hidden">处理中</span>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <span class="en-content">Under review</span>
+                            <span class="zh-content hidden">审查中</span>
+                        </p>
+                    </div>
+                    
+                    <div class="text-center p-4 bg-gray-800 bg-opacity-40 rounded-lg">
+                        <div class="status-badge status-approved mb-2">
+                            <span class="en-content">Approved</span>
+                            <span class="zh-content hidden">已批准</span>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <span class="en-content">Verification complete</span>
+                            <span class="zh-content hidden">验证完成</span>
+                        </p>
+                    </div>
+                    
+                    <div class="text-center p-4 bg-gray-800 bg-opacity-40 rounded-lg">
+                        <div class="status-badge status-rejected mb-2">
+                            <span class="en-content">Rejected</span>
+                            <span class="zh-content hidden">被拒绝</span>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <span class="en-content">Review required</span>
+                            <span class="zh-content hidden">需要重审</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 bg-blue-900 bg-opacity-30 border border-blue-500 border-opacity-50 rounded-lg">
+                    <h4 class="font-bold text-blue-400 mb-2">
+                        <i class="fas fa-bell mr-2"></i>
+                        <span class="en-content">Notification Methods</span>
+                        <span class="zh-content hidden">通知方式</span>
+                    </h4>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope text-blue-400 mr-2"></i>
+                            <span class="en-content">Email</span>
+                            <span class="zh-content hidden">邮件</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-sms text-blue-400 mr-2"></i>
+                            <span class="en-content">SMS</span>
+                            <span class="zh-content hidden">短信</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-comments text-blue-400 mr-2"></i>
+                            <span class="en-content">Platform Message</span>
+                            <span class="zh-content hidden">平台消息</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-tachometer-alt text-blue-400 mr-2"></i>
+                            <span class="en-content">Dashboard</span>
+                            <span class="zh-content hidden">状态面板</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="text-center">
+                <div class="inline-flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="mailto:wallet-support@aif.market" class="py-3 px-8 accent-gradient rounded-full font-medium text-white shadow-lg transform transition hover:scale-105">
+                        <i class="fas fa-wallet mr-2"></i>
+                        <span class="en-content">Start Wallet Verification</span>
+                        <span class="zh-content hidden">开始钱包验证</span>
+                    </a>
+                    <a href="mailto:compliance@aif.market" class="py-3 px-8 border border-pink-500 rounded-full font-medium text-white shadow-lg transform transition hover:scale-105 hover:bg-pink-500 hover:bg-opacity-20">
+                        <i class="fas fa-question-circle mr-2"></i>
+                        <span class="en-content">Compliance Consultation</span>
+                        <span class="zh-content hidden">合规咨询</span>
+                    </a>
+                </div>
+            </div>
+        
