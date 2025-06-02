@@ -260,6 +260,181 @@
                 font-size: 1.8rem;
             }
         }
+
+        /* Enhanced Certificate Styles */
+        .certificate-container {
+            background: linear-gradient(135deg, #1a1f29, #0f172a);
+            border: 1px solid rgba(0, 255, 157, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-family: 'Times New Roman', serif;
+            color: #e0e0e0;
+        }
+        
+        .certificate-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 157, 0.3);
+        }
+        
+        .certificate-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(45deg, transparent 49%, rgba(0, 255, 157, 0.05) 50%, transparent 51%),
+                linear-gradient(-45deg, transparent 49%, rgba(0, 255, 157, 0.05) 50%, transparent 51%);
+            background-size: 30px 30px;
+            opacity: 0.3;
+            z-index: 0;
+        }
+        
+        .certificate-content {
+            position: relative;
+            z-index: 1;
+            line-height: 1.6;
+        }
+        
+        .certificate-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(0, 255, 157, 0.3);
+        }
+        
+        .certificate-title {
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+        
+        .certificate-subtitle {
+            font-size: 1.4rem;
+            opacity: 0.9;
+            letter-spacing: 1px;
+        }
+        
+        .certificate-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--accent), transparent);
+            margin: 25px 0;
+        }
+        
+        .certificate-note {
+            font-style: italic;
+            font-size: 0.95rem;
+            color: #aaa;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.2);
+        }
+        
+        .certificate-signature {
+            margin-top: 40px;
+            text-align: right;
+        }
+        
+        .certificate-signature-name {
+            font-weight: bold;
+            color: var(--accent);
+            margin-top: 40px;
+            position: relative;
+            display: inline-block;
+            padding-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .certificate-signature-name::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            right: 0;
+            width: 200px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .certificate-body {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .certificate-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .certificate-modal-content {
+            max-width: 800px;
+            max-height: 90vh;
+            overflow: auto;
+            position: relative;
+        }
+        
+        .certificate-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: var(--accent);
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        
+        .certificate-modal-close:hover {
+            background: rgba(0, 255, 157, 0.2);
+        }
+        
+        /* New Layout Adjustments */
+        .certificate-section {
+            margin-bottom: 40px;
+        }
+        
+        .certificate-section h4 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0, 255, 157, 0.2);
+        }
+        
+        .certificate-full-view {
+            padding: 25px;
+            margin-top: 25px;
+        }
+        
+        .certificate-details {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+            border-left: 4px solid var(--primary);
+        }
     </style>
 </head>
 <body>
@@ -356,47 +531,136 @@
             <div class="card rounded-xl overflow-hidden cyber-border mb-12">
                 <div class="p-8">
                     <h3 class="text-2xl font-bold mb-6">📋 Agreement Overview</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                            <h4 class="text-lg font-bold mb-4 text-blue-400">Issuer Information</h4>
-                            <div class="space-y-3">
-                                <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
-                                    <div class="text-sm text-gray-400 mb-1">Company Name (English)</div>
-                                    <div class="font-medium">HONG KONG AI INTERNATIONAL FILM FESTIVAL LIMITED</div>
+                    <div class="grid grid-cols-1 gap-8">
+                        <!-- Certificate Section -->
+                        <div class="certificate-section">
+                            <h4 class="text-lg font-bold mb-4 text-blue-400">Company Registration Certificate</h4>
+                            <div class="certificate-container" id="certificatePreview">
+                                <div class="certificate-content">
+                                    <div class="certificate-header">
+                                        <div class="certificate-title">公司註冊證明書</div>
+                                        <div class="certificate-subtitle">CERTIFICATE OF INCORPORATION</div>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <div class="text-center mb-6">
+                                            <div class="font-mono text-lg">編號 77536113</div>
+                                            <div class="text-sm text-gray-400 mt-1">No. 77536113</div>
+                                        </div>
+                                        
+                                        <div class="text-center font-bold mb-6">
+                                            <div>公司註冊處</div>
+                                            <div>COMPANIES REGISTRY</div>
+                                        </div>
+                                        
+                                        <div class="text-center mb-8">
+                                            <div class="certificate-title">公司註冊證明書</div>
+                                            <div class="certificate-subtitle">CERTIFICATE OF INCORPORATION</div>
+                                        </div>
+                                        
+                                        <div class="text-center mb-10">
+                                            <div>***</div>
+                                        </div>
+                                        
+                                        <div class="certificate-body">
+                                            <div class="mb-6">
+                                                <div class="mb-4">本人謹此證明</div>
+                                                <div class="mb-4">I hereby certify that</div>
+                                                
+                                                <div class="text-center font-bold mb-6">
+                                                    <div>Hong Kong AI International Film Festival Limited</div>
+                                                    <div>香港人工智能國際電影節協會有限公司</div>
+                                                </div>
+                                                
+                                                <div class="mb-4">
+                                                    <div>於本日根據香港法例第622章《公司條例》</div>
+                                                    <div>is this day incorporated in Hong Kong under the Companies Ordinance</div>
+                                                </div>
+                                                
+                                                <div class="mb-4">
+                                                    <div>在香港成立為法團，此公司是一間</div>
+                                                    <div>(Chapter 622 of the Laws of Hong Kong), and that this company is</div>
+                                                </div>
+                                                
+                                                <div class="text-center font-bold mb-8">
+                                                    <div>有限公司。</div>
+                                                    <div>a limited company.</div>
+                                                </div>
+                                                
+                                                <div class="text-center mb-8">
+                                                    <div>本證明書於二〇二四年十二月三十一日發出。</div>
+                                                    <div>Issued on 31 December 2024.</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="certificate-divider"></div>
+                                        
+                                        <div class="certificate-signature">
+                                            <div>香港特別行政區公司註冊處處長鄧婉雯</div>
+                                            <div>Miss Helen TANG</div>
+                                            <div class="certificate-signature-name">Registrar of Companies</div>
+                                            <div>Hong Kong Special Administrative Region</div>
+                                        </div>
+                                        
+                                        <div class="certificate-note">
+                                            註 Note：<br>
+                                            公司名稱獲公司註冊處註冊，並不表示獲授予該公司名稱或其任何部分的商標權或任何其他知識產權。<br>
+                                            Registration of a company name with the Companies Registry does not confer any trade mark rights or any other intellectual property rights in respect of the company name or any part thereof.
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
-                                    <div class="text-sm text-gray-400 mb-1">Company Name (Chinese)</div>
-                                    <div class="font-medium">香港人工智能国际电影节协会有限公司</div>
-                                </div>
-                                <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
-                                    <div class="text-sm text-gray-400 mb-1">Business Registration No.</div>
-                                    <div class="font-medium font-mono">77536113-000-12-24-5</div>
-                                </div>
-                                <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
-                                    <div class="text-sm text-gray-400 mb-1">Jurisdiction</div>
-                                    <div class="font-medium">Hong Kong SAR</div>
-                                </div>
+                            </div>
+                            <div class="mt-4 text-center">
+                                <button class="btn-primary px-6 py-2 rounded-full text-sm" id="viewCertificateBtn">
+                                    <i class="fas fa-expand mr-1"></i>View Full Certificate
+                                </button>
                             </div>
                         </div>
                         
-                        <div>
-                            <h4 class="text-lg font-bold mb-4 text-purple-400">Token Information</h4>
-                            <div class="space-y-3">
-                                <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
-                                    <div class="text-sm text-gray-400 mb-1">Token Name</div>
-                                    <div class="font-medium">Hong Kong AI International Film Festival Token</div>
+                        <!-- Company and Token Info -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h4 class="text-lg font-bold mb-4 text-blue-400">Issuer Information</h4>
+                                <div class="space-y-3">
+                                    <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                        <div class="text-sm text-gray-400 mb-1">Company Name (English)</div>
+                                        <div class="font-medium">HONG KONG AI INTERNATIONAL FILM FESTIVAL LIMITED</div>
+                                    </div>
+                                    <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                        <div class="text-sm text-gray-400 mb-1">Company Name (Chinese)</div>
+                                        <div class="font-medium">香港人工智能国际电影节协会有限公司</div>
+                                    </div>
+                                    <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                        <div class="text-sm text-gray-400 mb-1">Business Registration No.</div>
+                                        <div class="font-medium font-mono">77536113-000-12-24-5</div>
+                                    </div>
+                                    <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                        <div class="text-sm text-gray-400 mb-1">Jurisdiction</div>
+                                        <div class="font-medium">Hong Kong SAR</div>
+                                    </div>
                                 </div>
-                                <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
-                                    <div class="text-sm text-gray-400 mb-1">Token Symbol</div>
-                                    <div class="font-medium">AIF</div>
-                                </div>
-                                <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
-                                    <div class="text-sm text-gray-400 mb-1">Total Supply</div>
-                                    <div class="font-medium">10,000,000,000 AIF</div>
-                                </div>
-                                <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
-                                    <div class="text-sm text-gray-400 mb-1">Private Sale Price</div>
-                                    <div class="font-medium text-blue-400">$0.05 per AIF</div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="text-lg font-bold mb-4 text-purple-400">Token Information</h4>
+                                <div class="space-y-3">
+                                    <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                        <div class="text-sm text-gray-400 mb-1">Token Name</div>
+                                        <div class="font-medium">Hong Kong AI International Film Festival Token</div>
+                                    </div>
+                                    <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                        <div class="text-sm text-gray-400 mb-1">Token Symbol</div>
+                                        <div class="font-medium">AIF</div>
+                                    </div>
+                                    <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                        <div class="text-sm text-gray-400 mb-1">Total Supply</div>
+                                        <div class="font-medium">10,000,000,000 AIF</div>
+                                    </div>
+                                    <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                        <div class="text-sm text-gray-400 mb-1">Private Sale Price</div>
+                                        <div class="font-medium text-blue-400">$0.05 per AIF</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -525,7 +789,7 @@
             
             <!-- Download Links -->
             <div class="text-center">
-                <div class="inline-flex space-x-4">
+                <div class="inline-flex flex-wrap justify-center gap-4">
                     <a href="mailto:legal@aif.market" class="btn-primary px-8 py-3 rounded-full font-medium text-center">
                         <i class="fas fa-download mr-2"></i>
                         Request SAFT Document
@@ -709,6 +973,91 @@
         </div>
     </section>
 
+    <!-- Certificate Modal -->
+    <div class="certificate-modal" id="certificateModal">
+        <div class="certificate-modal-content">
+            <div class="certificate-modal-close" id="closeCertificateModal">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="certificate-container certificate-full-view">
+                <div class="certificate-content">
+                    <div class="certificate-header">
+                        <div class="certificate-title">公司註冊證明書</div>
+                        <div class="certificate-subtitle">CERTIFICATE OF INCORPORATION</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="text-center mb-6">
+                            <div class="font-mono text-xl">編號 77536113</div>
+                            <div class="text-sm text-gray-400 mt-1">No. 77536113</div>
+                        </div>
+                        
+                        <div class="text-center font-bold mb-8">
+                            <div class="text-xl">公司註冊處</div>
+                            <div class="text-lg">COMPANIES REGISTRY</div>
+                        </div>
+                        
+                        <div class="text-center mb-10">
+                            <div class="certificate-title">公司註冊證明書</div>
+                            <div class="certificate-subtitle">CERTIFICATE OF INCORPORATION</div>
+                        </div>
+                        
+                        <div class="text-center mb-12">
+                            <div class="text-xl">***</div>
+                        </div>
+                        
+                        <div class="certificate-body">
+                            <div class="mb-8">
+                                <div class="mb-4 text-lg">本人謹此證明</div>
+                                <div class="mb-4 text-lg">I hereby certify that</div>
+                                
+                                <div class="text-center font-bold mb-8">
+                                    <div class="text-xl">Hong Kong AI International Film Festival Limited</div>
+                                    <div class="text-xl">香港人工智能國際電影節協會有限公司</div>
+                                </div>
+                                
+                                <div class="mb-4 text-lg">
+                                    <div>於本日根據香港法例第622章《公司條例》</div>
+                                    <div>is this day incorporated in Hong Kong under the Companies Ordinance</div>
+                                </div>
+                                
+                                <div class="mb-4 text-lg">
+                                    <div>在香港成立為法團，此公司是一間</div>
+                                    <div>(Chapter 622 of the Laws of Hong Kong), and that this company is</div>
+                                </div>
+                                
+                                <div class="text-center font-bold mb-10">
+                                    <div class="text-xl">有限公司。</div>
+                                    <div class="text-xl">a limited company.</div>
+                                </div>
+                                
+                                <div class="text-center mb-10">
+                                    <div class="text-lg">本證明書於二〇二四年十二月三十一日發出。</div>
+                                    <div class="text-lg">Issued on 31 December 2024.</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="certificate-divider"></div>
+                        
+                        <div class="certificate-signature">
+                            <div class="text-lg">香港特別行政區公司註冊處處長鄧婉雯</div>
+                            <div class="text-lg">Miss Helen TANG</div>
+                            <div class="certificate-signature-name">Registrar of Companies</div>
+                            <div class="text-lg">Hong Kong Special Administrative Region</div>
+                        </div>
+                        
+                        <div class="certificate-note">
+                            註 Note：<br>
+                            公司名稱獲公司註冊處註冊，並不表示獲授予該公司名稱或其任何部分的商標權或任何其他知識產權。<br>
+                            Registration of a company name with the Companies Registry does not confer any trade mark rights or any other intellectual property rights in respect of the company name or any part thereof.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="py-12">
         <div class="container mx-auto px-4">
@@ -769,6 +1118,29 @@
         mobileMenuClose.addEventListener('click', () => {
             mobileMenu.classList.remove('open');
             document.body.style.overflow = 'auto';
+        });
+        
+        // Certificate modal functionality
+        const certificateModal = document.getElementById('certificateModal');
+        const viewCertificateBtn = document.getElementById('viewCertificateBtn');
+        const closeCertificateModal = document.getElementById('closeCertificateModal');
+        
+        viewCertificateBtn.addEventListener('click', () => {
+            certificateModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        closeCertificateModal.addEventListener('click', () => {
+            certificateModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Close modal when clicking outside
+        certificateModal.addEventListener('click', (e) => {
+            if (e.target === certificateModal) {
+                certificateModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
         });
         
         // Add random data streams
