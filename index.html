@@ -274,6 +274,7 @@
             cursor: pointer;
             font-family: 'Times New Roman', serif;
             color: #e0e0e0;
+            margin-bottom: 20px;
         }
         
         .certificate-container:hover {
@@ -310,7 +311,7 @@
         }
         
         .certificate-title {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: bold;
             letter-spacing: 2px;
             margin-bottom: 8px;
@@ -319,7 +320,7 @@
         }
         
         .certificate-subtitle {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             opacity: 0.9;
             letter-spacing: 1px;
         }
@@ -332,7 +333,7 @@
         
         .certificate-note {
             font-style: italic;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             color: #aaa;
             margin-top: 25px;
             padding-top: 15px;
@@ -351,7 +352,7 @@
             position: relative;
             display: inline-block;
             padding-right: 10px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
         
         .certificate-signature-name::after {
@@ -365,7 +366,7 @@
         }
         
         .certificate-body {
-            font-size: 1.1rem;
+            font-size: 1rem;
             line-height: 1.8;
         }
         
@@ -434,6 +435,98 @@
             border-radius: 8px;
             margin-top: 25px;
             border-left: 4px solid var(--primary);
+        }
+
+        .certificate-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 8px;
+            padding: 5px;
+        }
+
+        .certificate-tab {
+            flex: 1;
+            padding: 12px 20px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .certificate-tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .certificate-tab:not(.active) {
+            color: #aaa;
+        }
+
+        .certificate-tab:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .certificate-content-wrapper {
+            display: none;
+        }
+
+        .certificate-content-wrapper.active {
+            display: block;
+        }
+
+        .business-reg-cert {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            padding: 25px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .business-reg-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .business-reg-title {
+            font-size: 1.4rem;
+            color: #3b82f6;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .business-reg-number {
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .business-reg-body {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .reg-field {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+        }
+
+        .reg-field-label {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .reg-field-value {
+            font-weight: 500;
+            color: #e0e0e0;
         }
     </style>
 </head>
@@ -534,87 +627,305 @@
                     <div class="grid grid-cols-1 gap-8">
                         <!-- Certificate Section -->
                         <div class="certificate-section">
-                            <h4 class="text-lg font-bold mb-4 text-blue-400">Company Registration Certificate</h4>
-                            <div class="certificate-container" id="certificatePreview">
-                                <div class="certificate-content">
-                                    <div class="certificate-header">
-                                        <div class="certificate-title">公司註冊證明書</div>
-                                        <div class="certificate-subtitle">CERTIFICATE OF INCORPORATION</div>
-                                    </div>
-                                    
-                                    <div class="mb-4">
-                                        <div class="text-center mb-6">
-                                            <div class="font-mono text-lg">編號 77536113</div>
-                                            <div class="text-sm text-gray-400 mt-1">No. 77536113</div>
-                                        </div>
-                                        
-                                        <div class="text-center font-bold mb-6">
-                                            <div>公司註冊處</div>
-                                            <div>COMPANIES REGISTRY</div>
-                                        </div>
-                                        
-                                        <div class="text-center mb-8">
+                            <h4 class="text-lg font-bold mb-4 text-blue-400">Company Registration Certificates</h4>
+                            
+                            <!-- Certificate Tabs -->
+                            <div class="certificate-tabs">
+                                <div class="certificate-tab active" data-cert="incorporation-main">
+                                    <i class="fas fa-certificate mr-2"></i>
+                                    Main Certificate
+                                </div>
+                                <div class="certificate-tab" data-cert="incorporation-academy">
+                                    <i class="fas fa-graduation-cap mr-2"></i>
+                                    Academy Certificate
+                                </div>
+                                <div class="certificate-tab" data-cert="business1">
+                                    <i class="fas fa-building mr-2"></i>
+                                    Business Registration (Market)
+                                </div>
+                                <div class="certificate-tab" data-cert="business2">
+                                    <i class="fas fa-film mr-2"></i>
+                                    Business Registration (Festival)
+                                </div>
+                            </div>
+
+                            <!-- Main Certificate of Incorporation -->
+                            <div class="certificate-content-wrapper active" id="incorporation-main">
+                                <div class="certificate-container" data-modal="incorporation-main">
+                                    <div class="certificate-content">
+                                        <div class="certificate-header">
                                             <div class="certificate-title">公司註冊證明書</div>
                                             <div class="certificate-subtitle">CERTIFICATE OF INCORPORATION</div>
                                         </div>
                                         
-                                        <div class="text-center mb-10">
-                                            <div>***</div>
-                                        </div>
-                                        
-                                        <div class="certificate-body">
-                                            <div class="mb-6">
-                                                <div class="mb-4">本人謹此證明</div>
-                                                <div class="mb-4">I hereby certify that</div>
-                                                
-                                                <div class="text-center font-bold mb-6">
-                                                    <div>Hong Kong AI International Film Festival Limited</div>
-                                                    <div>香港人工智能國際電影節協會有限公司</div>
-                                                </div>
-                                                
-                                                <div class="mb-4">
-                                                    <div>於本日根據香港法例第622章《公司條例》</div>
-                                                    <div>is this day incorporated in Hong Kong under the Companies Ordinance</div>
-                                                </div>
-                                                
-                                                <div class="mb-4">
-                                                    <div>在香港成立為法團，此公司是一間</div>
-                                                    <div>(Chapter 622 of the Laws of Hong Kong), and that this company is</div>
-                                                </div>
-                                                
-                                                <div class="text-center font-bold mb-8">
-                                                    <div>有限公司。</div>
-                                                    <div>a limited company.</div>
-                                                </div>
-                                                
-                                                <div class="text-center mb-8">
-                                                    <div>本證明書於二〇二四年十二月三十一日發出。</div>
-                                                    <div>Issued on 31 December 2024.</div>
+                                        <div class="mb-4">
+                                            <div class="text-center mb-6">
+                                                <div class="font-mono text-lg">編號 77536113</div>
+                                                <div class="text-sm text-gray-400 mt-1">No. 77536113</div>
+                                            </div>
+                                            
+                                            <div class="text-center font-bold mb-6">
+                                                <div>公司註冊處</div>
+                                                <div>COMPANIES REGISTRY</div>
+                                            </div>
+                                            
+                                            <div class="certificate-body">
+                                                <div class="mb-6">
+                                                    <div class="mb-4">本人謹此證明</div>
+                                                    <div class="mb-4">I hereby certify that</div>
+                                                    
+                                                    <div class="text-center font-bold mb-6">
+                                                        <div>Hong Kong AI International Film Festival Limited</div>
+                                                        <div>香港人工智能國際電影節協會有限公司</div>
+                                                    </div>
+                                                    
+                                                    <div class="mb-4">
+                                                        <div>於本日根據香港法例第622章《公司條例》</div>
+                                                        <div>is this day incorporated in Hong Kong under the Companies Ordinance</div>
+                                                        <div>(Chapter 622 of the Laws of Hong Kong), and that this company is</div>
+                                                    </div>
+                                                    
+                                                    <div class="text-center font-bold mb-8">
+                                                        <div>有限公司。</div>
+                                                        <div>a limited company.</div>
+                                                    </div>
+                                                    
+                                                    <div class="text-center mb-8">
+                                                        <div>本證明書於二〇二四年十二月三十一日發出。</div>
+                                                        <div>Issued on 31 December 2024.</div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        
-                                        <div class="certificate-divider"></div>
-                                        
-                                        <div class="certificate-signature">
-                                            <div>香港特別行政區公司註冊處處長鄧婉雯</div>
-                                            <div>Miss Helen TANG</div>
-                                            <div class="certificate-signature-name">Registrar of Companies</div>
-                                            <div>Hong Kong Special Administrative Region</div>
-                                        </div>
-                                        
-                                        <div class="certificate-note">
-                                            註 Note：<br>
-                                            公司名稱獲公司註冊處註冊，並不表示獲授予該公司名稱或其任何部分的商標權或任何其他知識產權。<br>
-                                            Registration of a company name with the Companies Registry does not confer any trade mark rights or any other intellectual property rights in respect of the company name or any part thereof.
+                                            
+                                            <div class="certificate-divider"></div>
+                                            
+                                            <div class="certificate-signature">
+                                                <div>香港特別行政區公司註冊處處長鄧婉雯</div>
+                                                <div>Miss Helen TANG</div>
+                                                <div class="certificate-signature-name">Registrar of Companies</div>
+                                                <div>Hong Kong Special Administrative Region</div>
+                                            </div>
+                                            
+                                            <div class="certificate-note">
+                                                註 Note：<br>
+                                                公司名稱獲公司註冊處註冊，並不表示獲授予該公司名稱或其任何部分的商標權或任何其他知識產權。<br>
+                                                Registration of a company name with the Companies Registry does not confer any trade mark rights or any other intellectual property rights in respect of the company name or any part thereof.
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="mt-4 text-center">
+                                    <button class="btn-primary px-6 py-2 rounded-full text-sm" data-modal-btn="incorporation-main">
+                                        <i class="fas fa-expand mr-1"></i>View Full Certificate
+                                    </button>
+                                </div>
                             </div>
-                            <div class="mt-4 text-center">
-                                <button class="btn-primary px-6 py-2 rounded-full text-sm" id="viewCertificateBtn">
-                                    <i class="fas fa-expand mr-1"></i>View Full Certificate
-                                </button>
+
+                            <!-- Academy Certificate of Incorporation -->
+                            <div class="certificate-content-wrapper" id="incorporation-academy">
+                                <div class="certificate-container" data-modal="incorporation-academy">
+                                    <div class="certificate-content">
+                                        <div class="certificate-header">
+                                            <div class="certificate-title">公司註冊證明書</div>
+                                            <div class="certificate-subtitle">CERTIFICATE OF INCORPORATION</div>
+                                        </div>
+                                        
+                                        <div class="mb-4">
+                                            <div class="text-center mb-6">
+                                                <div class="font-mono text-lg">編號 77960839</div>
+                                                <div class="text-sm text-gray-400 mt-1">No. 77960839</div>
+                                            </div>
+                                            
+                                            <div class="text-center font-bold mb-6">
+                                                <div>公司註冊處</div>
+                                                <div>COMPANIES REGISTRY</div>
+                                            </div>
+                                            
+                                            <div class="certificate-body">
+                                                <div class="mb-6">
+                                                    <div class="mb-4">本人謹此證明</div>
+                                                    <div class="mb-4">I hereby certify that</div>
+                                                    
+                                                    <div class="text-center font-bold mb-6">
+                                                        <div>Hong Kong AI Film Academy Limited</div>
+                                                    </div>
+                                                    
+                                                    <div class="mb-4">
+                                                        <div>於本日根據香港法例第622章《公司條例》</div>
+                                                        <div>is this day incorporated in Hong Kong under the Companies Ordinance</div>
+                                                        <div>(Chapter 622 of the Laws of Hong Kong), and that this company is</div>
+                                                    </div>
+                                                    
+                                                    <div class="text-center font-bold mb-8">
+                                                        <div>有限公司。</div>
+                                                        <div>a limited company.</div>
+                                                    </div>
+                                                    
+                                                    <div class="text-center mb-8">
+                                                        <div>本證明書於二〇二五年四月三日發出。</div>
+                                                        <div>Issued on 3 April 2025.</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="certificate-divider"></div>
+                                            
+                                            <div class="certificate-signature">
+                                                <div>香港特別行政區公司註冊處處長楊善</div>
+                                                <div>Ms Majestic YEUNG</div>
+                                                <div class="certificate-signature-name">Registrar of Companies</div>
+                                                <div>Hong Kong Special Administrative Region</div>
+                                            </div>
+                                            
+                                            <div class="certificate-note">
+                                                註 Note：<br>
+                                                公司名稱獲公司註冊處註冊，並不表示獲授予該公司名稱或其任何部分的商標權或任何其他知識產權。<br>
+                                                Registration of a company name with the Companies Registry does not confer any trade mark rights or any other intellectual property rights in respect of the company name or any part thereof.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 text-center">
+                                    <button class="btn-primary px-6 py-2 rounded-full text-sm" data-modal-btn="incorporation-academy">
+                                        <i class="fas fa-expand mr-1"></i>View Full Certificate
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Business Registration Certificate 1 (Market) -->
+                            <div class="certificate-content-wrapper" id="business1">
+                                <div class="business-reg-cert" data-modal="business1">
+                                    <div class="business-reg-header">
+                                        <div class="business-reg-title">BUSINESS REGISTRATION CERTIFICATE</div>
+                                        <div class="business-reg-number">Certificate No. 77536113-002-12-24-7</div>
+                                    </div>
+                                    
+                                    <div class="business-reg-body">
+                                        <div class="reg-field">
+                                            <div class="reg-field-label">業務 / 法團所用名稱 (Name of Business/Corporation)</div>
+                                            <div class="reg-field-value">香港人工智能國際電影節協會有限公司</div>
+                                            <div class="reg-field-value">HONG KONG AI INTERNATIONAL FILM FESTIVAL LIMITED</div>
+                                        </div>
+                                        
+                                        <div class="reg-field">
+                                            <div class="reg-field-label">業務 / 分行名稱 (Business/Branch Name)</div>
+                                            <div class="reg-field-value">香港人工智能電影市場</div>
+                                            <div class="reg-field-value">HONG KONG ARTIFICIAL INTELLIGENCE FILM MARKET</div>
+                                        </div>
+                                        
+                                        <div class="reg-field">
+                                            <div class="reg-field-label">地址 (Address)</div>
+                                            <div class="reg-field-value">FLAT D07 8/F</div>
+                                            <div class="reg-field-value">KAI TAK FTY BUILDING</div>
+                                            <div class="reg-field-value">NO.99 KING FUK ST SANPOKONG KL</div>
+                                        </div>
+                                        
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div class="reg-field">
+                                                <div class="reg-field-label">生效日期 (Date of Commencement)</div>
+                                                <div class="reg-field-value">22/01/2025</div>
+                                            </div>
+                                            
+                                            <div class="reg-field">
+                                                <div class="reg-field-label">屆滿日期 (Date of Expiry)</div>
+                                                <div class="reg-field-value">30/12/2025</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="reg-field">
+                                            <div class="reg-field-label">業務性質 (Nature of Business)</div>
+                                            <div class="reg-field-value">人工智能算法，技術，產品和電影節及電影業相關的活動和產品</div>
+                                        </div>
+                                        
+                                        <div class="reg-field">
+                                            <div class="reg-field-label">法律地位 (Status)</div>
+                                            <div class="reg-field-value">BODY CORPORATE</div>
+                                        </div>
+                                        
+                                        <div class="reg-field">
+                                            <div class="reg-field-label">登記證號碼 (Certificate No.)</div>
+                                            <div class="reg-field-value">77536113-002-12-24-7</div>
+                                        </div>
+                                        
+                                        <div class="reg-field">
+                                            <div class="reg-field-label">登記費及徵費 (Fee and Levy)</div>
+                                            <div class="reg-field-value">$80 (登記費 FEE = $80) (徵費 LEVY = $0)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 text-center">
+                                    <button class="btn-primary px-6 py-2 rounded-full text-sm" data-modal-btn="business1">
+                                        <i class="fas fa-expand mr-1"></i>View Full Certificate
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Business Registration Certificate 2 (Festival) -->
+                            <div class="certificate-content-wrapper" id="business2">
+                                <div class="business-reg-cert" data-modal="business2">
+                                    <div class="business-reg-header">
+                                        <div class="business-reg-title">BUSINESS REGISTRATION CERTIFICATE</div>
+                                        <div class="business-reg-number">Certificate No. 77536113-001-12-24-6</div>
+                                    </div>
+                                    
+                                    <div class="business-reg-body">
+                                        <div class="reg-field">
+                                            <div class="reg-field-label">業務 / 法團所用名稱 (Name of Business/Corporation)</div>
+                                            <div class="reg-field-value">香港人工智能國際電影節協會有限公司</div>
+                                            <div class="reg-field-value">HONG KONG AI INTERNATIONAL FILM FESTIVAL LIMITED</div>
+                                        </div>
+                                        
+                                        <div class="reg-field">
+                                            <div class="reg-field-label">業務 / 分行名稱 (Business/Branch Name)</div>
+                                            <div class="reg-field-value">香港人工智能國際電影節協會</div>
+                                            <div class="reg-field-value">HONG KONG ARTIFICIAL INTERNATIONAL FILM FESTIVAL ASSOCIATION</div>
+                                        </div>
+                                        
+                                        <div class="reg-field">
+                                            <div class="reg-field-label">地址 (Address)</div>
+                                            <div class="reg-field-value">RM D07 8/F</div>
+                                            <div class="reg-field-value">KAI TAK FTY BUILDING</div>
+                                            <div class="reg-field-value">NO. 99 KING FUK ST SANPOKONG KL</div>
+                                        </div>
+                                        
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div class="reg-field">
+                                                <div class="reg-field-label">生效日期 (Date of Commencement)</div>
+                                                <div class="reg-field-value">22/01/2025</div>
+                                            </div>
+                                            
+                                            <div class="reg-field">
+                                                <div class="reg-field-label">屆滿日期 (Date of Expiry)</div>
+                                                <div class="reg-field-value">30/12/2025</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="reg-field">
+                                            <div class="reg-field-label">業務性質 (Nature of Business)</div>
+                                            <div class="reg-field-value">人工智能算法，技術，產品和電影節及電影業相關的活動和產品</div>
+                                        </div>
+                                        
+                                        <div class="reg-field">
+                                            <div class="reg-field-label">法律地位 (Status)</div>
+                                            <div class="reg-field-value">BODY CORPORATE</div>
+                                        </div>
+                                        
+                                        <div class="reg-field">
+                                            <div class="reg-field-label">登記證號碼 (Certificate No.)</div>
+                                            <div class="reg-field-value">77536113-001-12-24-6</div>
+                                        </div>
+                                        
+                                        <div class="reg-field">
+                                            <div class="reg-field-label">登記費及徵費 (Fee and Levy)</div>
+                                            <div class="reg-field-value">$80 (登記費 FEE = $80) (徵費 LEVY = $0)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 text-center">
+                                    <button class="btn-primary px-6 py-2 rounded-full text-sm" data-modal-btn="business2">
+                                        <i class="fas fa-expand mr-1"></i>View Full Certificate
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         
@@ -624,16 +935,24 @@
                                 <h4 class="text-lg font-bold mb-4 text-blue-400">Issuer Information</h4>
                                 <div class="space-y-3">
                                     <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
-                                        <div class="text-sm text-gray-400 mb-1">Company Name (English)</div>
+                                        <div class="text-sm text-gray-400 mb-1">Primary Company Name (English)</div>
                                         <div class="font-medium">HONG KONG AI INTERNATIONAL FILM FESTIVAL LIMITED</div>
                                     </div>
                                     <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
-                                        <div class="text-sm text-gray-400 mb-1">Company Name (Chinese)</div>
-                                        <div class="font-medium">香港人工智能国际电影节协会有限公司</div>
+                                        <div class="text-sm text-gray-400 mb-1">Primary Company Name (Chinese)</div>
+                                        <div class="font-medium">香港人工智能國際電影節協會有限公司</div>
+                                    </div>
+                                    <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                        <div class="text-sm text-gray-400 mb-1">Primary Incorporation No.</div>
+                                        <div class="font-medium font-mono">77536113</div>
+                                    </div>
+                                    <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
+                                        <div class="text-sm text-gray-400 mb-1">Academy Incorporation No.</div>
+                                        <div class="font-medium font-mono">77960839</div>
                                     </div>
                                     <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
                                         <div class="text-sm text-gray-400 mb-1">Business Registration No.</div>
-                                        <div class="font-medium font-mono">77536113-000-12-24-5</div>
+                                        <div class="font-medium font-mono">77536113-001-12-24-6</div>
                                     </div>
                                     <div class="p-4 bg-gray-800 bg-opacity-60 rounded-lg">
                                         <div class="text-sm text-gray-400 mb-1">Jurisdiction</div>
@@ -973,10 +1292,11 @@
         </div>
     </section>
 
-    <!-- Certificate Modal -->
-    <div class="certificate-modal" id="certificateModal">
+    <!-- Certificate Modals -->
+    <!-- Modal for Main Certificate of Incorporation -->
+    <div class="certificate-modal" id="incorporation-mainModal">
         <div class="certificate-modal-content">
-            <div class="certificate-modal-close" id="closeCertificateModal">
+            <div class="certificate-modal-close" data-close="incorporation-main">
                 <i class="fas fa-times"></i>
             </div>
             <div class="certificate-container certificate-full-view">
@@ -1058,6 +1378,258 @@
         </div>
     </div>
 
+    <!-- Modal for Academy Certificate of Incorporation -->
+    <div class="certificate-modal" id="incorporation-academyModal">
+        <div class="certificate-modal-content">
+            <div class="certificate-modal-close" data-close="incorporation-academy">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="certificate-container certificate-full-view">
+                <div class="certificate-content">
+                    <div class="certificate-header">
+                        <div class="certificate-title">公司註冊證明書</div>
+                        <div class="certificate-subtitle">CERTIFICATE OF INCORPORATION</div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="text-center mb-6">
+                            <div class="font-mono text-xl">編號 77960839</div>
+                            <div class="text-sm text-gray-400 mt-1">No. 77960839</div>
+                        </div>
+                        
+                        <div class="text-center font-bold mb-8">
+                            <div class="text-xl">公司註冊處</div>
+                            <div class="text-lg">COMPANIES REGISTRY</div>
+                        </div>
+                        
+                        <div class="text-center mb-10">
+                            <div class="certificate-title">公司註冊證明書</div>
+                            <div class="certificate-subtitle">CERTIFICATE OF INCORPORATION</div>
+                        </div>
+                        
+                        <div class="text-center mb-12">
+                            <div class="text-xl">***</div>
+                        </div>
+                        
+                        <div class="certificate-body">
+                            <div class="mb-8">
+                                <div class="mb-4 text-lg">本人謹此證明</div>
+                                <div class="mb-4 text-lg">I hereby certify that</div>
+                                
+                                <div class="text-center font-bold mb-8">
+                                    <div class="text-xl">Hong Kong AI Film Academy Limited</div>
+                                </div>
+                                
+                                <div class="mb-4 text-lg">
+                                    <div>於本日根據香港法例第622章《公司條例》</div>
+                                    <div>is this day incorporated in Hong Kong under the Companies Ordinance</div>
+                                </div>
+                                
+                                <div class="mb-4 text-lg">
+                                    <div>在香港成立為法團，此公司是一間</div>
+                                    <div>(Chapter 622 of the Laws of Hong Kong), and that this company is</div>
+                                </div>
+                                
+                                <div class="text-center font-bold mb-10">
+                                    <div class="text-xl">有限公司。</div>
+                                    <div class="text-xl">a limited company.</div>
+                                </div>
+                                
+                                <div class="text-center mb-10">
+                                    <div class="text-lg">本證明書於二〇二五年四月三日發出。</div>
+                                    <div class="text-lg">Issued on 3 April 2025.</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="certificate-divider"></div>
+                        
+                        <div class="certificate-signature">
+                            <div class="text-lg">香港特別行政區公司註冊處處長楊善</div>
+                            <div class="text-lg">Ms Majestic YEUNG</div>
+                            <div class="certificate-signature-name">Registrar of Companies</div>
+                            <div class="text-lg">Hong Kong Special Administrative Region</div>
+                        </div>
+                        
+                        <div class="certificate-note">
+                            註 Note：<br>
+                            公司名稱獲公司註冊處註冊，並不表示獲授予該公司名稱或其任何部分的商標權或任何其他知識產權。<br>
+                            Registration of a company name with the Companies Registry does not confer any trade mark rights or any other intellectual property rights in respect of the company name or any part thereof.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Business Registration 1 -->
+    <div class="certificate-modal" id="business1Modal">
+        <div class="certificate-modal-content">
+            <div class="certificate-modal-close" data-close="business1">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="business-reg-cert certificate-full-view">
+                <div class="business-reg-header">
+                    <div class="text-center mb-4">
+                        <div class="text-red-600 font-bold text-lg">CR</div>
+                        <div class="text-sm">公司註冊處</div>
+                        <div class="text-sm">COMPANIES REGISTRY</div>
+                    </div>
+                    <div class="business-reg-title">商業登記條例 (第310章)</div>
+                    <div class="text-sm mb-2">BUSINESS REGISTRATION ORDINANCE (Chapter 310)</div>
+                    <div class="text-sm mb-4">(商業登記規例) BUSINESS REGISTRATION REGULATIONS</div>
+                    <div class="business-reg-number">Certificate No. 77536113-002-12-24-7</div>
+                </div>
+                
+                <div class="business-reg-body">
+                    <div class="reg-field">
+                        <div class="reg-field-label">業務 / 法團所用名稱 (Name of Business/Corporation)</div>
+                        <div class="reg-field-value">香港人工智能國際電影節協會有限公司</div>
+                        <div class="reg-field-value">HONG KONG AI INTERNATIONAL FILM FESTIVAL LIMITED</div>
+                    </div>
+                    
+                    <div class="reg-field">
+                        <div class="reg-field-label">業務 / 分行名稱 (Business/Branch Name)</div>
+                        <div class="reg-field-value">香港人工智能電影市場</div>
+                        <div class="reg-field-value">HONG KONG ARTIFICIAL INTELLIGENCE FILM MARKET</div>
+                    </div>
+                    
+                    <div class="reg-field">
+                        <div class="reg-field-label">地址 (Address)</div>
+                        <div class="reg-field-value">FLAT D07 8/F</div>
+                        <div class="reg-field-value">KAI TAK FTY BUILDING</div>
+                        <div class="reg-field-value">NO.99 KING FUK ST SANPOKONG KL</div>
+                    </div>
+                    
+                    <div class="reg-field">
+                        <div class="reg-field-label">業務性質 (Nature of Business)</div>
+                        <div class="reg-field-value">人工智能算法，技術，產品和電影節及電影業相關的活動和產品</div>
+                    </div>
+                    
+                    <div class="reg-field">
+                        <div class="reg-field-label">法律地位 (Status)</div>
+                        <div class="reg-field-value">BODY CORPORATE</div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="reg-field">
+                            <div class="reg-field-label">生效日期 (Date of Commencement)</div>
+                            <div class="reg-field-value">22/01/2025</div>
+                        </div>
+                        
+                        <div class="reg-field">
+                            <div class="reg-field-label">屆滿日期 (Date of Expiry)</div>
+                            <div class="reg-field-value">30/12/2025</div>
+                        </div>
+                        
+                        <div class="reg-field">
+                            <div class="reg-field-label">登記證號碼 (Certificate No.)</div>
+                            <div class="reg-field-value">77536113-002-12-24-7</div>
+                        </div>
+                    </div>
+                    
+                    <div class="reg-field">
+                        <div class="reg-field-label">登記費及徵費 (Fee and Levy)</div>
+                        <div class="reg-field-value">$80 (登記費 FEE = $80) (徵費 LEVY = $0)</div>
+                    </div>
+                    
+                    <div class="certificate-note mt-6">
+                        請注意下列（商業登記條例）的規定：<br>
+                        Please note the following requirements of the Business Registration Ordinance:<br><br>
+                        1. 第6(6)條規定任何業務獲發商業登記證或分行登記證，並不表示該業務或該業務的人或僱員於執行該業務的僱員已遵從有關的任何法律規定。<br>
+                        1. Section 6(6) provides that the issue of a business registration certificate or a branch registration certificate shall not be deemed to imply that the requirements of any law in relation to such business or to the persons carrying on the same or employed therein have been complied with.<br><br>
+                        2. 第12條規定各業務須將其有效的商業登記證或有效的分行登記證於每一營業地點展示。<br>
+                        2. Section 12 provides that valid business registration certificate or valid branch registration certificate shall be displayed at every address where business is carried on.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Business Registration 2 -->
+    <div class="certificate-modal" id="business2Modal">
+        <div class="certificate-modal-content">
+            <div class="certificate-modal-close" data-close="business2">
+                <i class="fas fa-times"></i>
+            </div>
+            <div class="business-reg-cert certificate-full-view">
+                <div class="business-reg-header">
+                    <div class="text-center mb-4">
+                        <div class="text-red-600 font-bold text-lg">CR</div>
+                        <div class="text-sm">公司註冊處</div>
+                        <div class="text-sm">COMPANIES REGISTRY</div>
+                    </div>
+                    <div class="business-reg-title">商業登記條例 (第310章)</div>
+                    <div class="text-sm mb-2">BUSINESS REGISTRATION ORDINANCE (Chapter 310)</div>
+                    <div class="text-sm mb-4">(商業登記規例) BUSINESS REGISTRATION REGULATIONS</div>
+                    <div class="business-reg-number">Certificate No. 77536113-001-12-24-6</div>
+                </div>
+                
+                <div class="business-reg-body">
+                    <div class="reg-field">
+                        <div class="reg-field-label">業務 / 法團所用名稱 (Name of Business/Corporation)</div>
+                        <div class="reg-field-value">香港人工智能國際電影節協會有限公司</div>
+                        <div class="reg-field-value">HONG KONG AI INTERNATIONAL FILM FESTIVAL LIMITED</div>
+                    </div>
+                    
+                    <div class="reg-field">
+                        <div class="reg-field-label">業務 / 分行名稱 (Business/Branch Name)</div>
+                        <div class="reg-field-value">香港人工智能國際電影節協會</div>
+                        <div class="reg-field-value">HONG KONG ARTIFICIAL INTERNATIONAL FILM FESTIVAL ASSOCIATION</div>
+                    </div>
+                    
+                    <div class="reg-field">
+                        <div class="reg-field-label">地址 (Address)</div>
+                        <div class="reg-field-value">RM D07 8/F</div>
+                        <div class="reg-field-value">KAI TAK FTY BUILDING</div>
+                        <div class="reg-field-value">NO. 99 KING FUK ST SANPOKONG KL</div>
+                    </div>
+                    
+                    <div class="reg-field">
+                        <div class="reg-field-label">業務性質 (Nature of Business)</div>
+                        <div class="reg-field-value">人工智能算法，技術，產品和電影節及電影業相關的活動和產品</div>
+                    </div>
+                    
+                    <div class="reg-field">
+                        <div class="reg-field-label">法律地位 (Status)</div>
+                        <div class="reg-field-value">BODY CORPORATE</div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="reg-field">
+                            <div class="reg-field-label">生效日期 (Date of Commencement)</div>
+                            <div class="reg-field-value">22/01/2025</div>
+                        </div>
+                        
+                        <div class="reg-field">
+                            <div class="reg-field-label">屆滿日期 (Date of Expiry)</div>
+                            <div class="reg-field-value">30/12/2025</div>
+                        </div>
+                        
+                        <div class="reg-field">
+                            <div class="reg-field-label">登記證號碼 (Certificate No.)</div>
+                            <div class="reg-field-value">77536113-001-12-24-6</div>
+                        </div>
+                    </div>
+                    
+                    <div class="reg-field">
+                        <div class="reg-field-label">登記費及徵費 (Fee and Levy)</div>
+                        <div class="reg-field-value">$80 (登記費 FEE = $80) (徵費 LEVY = $0)</div>
+                    </div>
+                    
+                    <div class="certificate-note mt-6">
+                        請注意下列（商業登記條例）的規定：<br>
+                        Please note the following requirements of the Business Registration Ordinance:<br><br>
+                        1. 第6(6)條規定任何業務獲發商業登記證或分行登記證，並不表示該業務或該業務的人或僱員於執行該業務的僱員已遵從有關的任何法律規定。<br>
+                        1. Section 6(6) provides that the issue of a business registration certificate or a branch registration certificate shall not be deemed to imply that the requirements of any law in relation to such business or to the persons carrying on the same or employed therein have been complied with.<br><br>
+                        2. 第12條規定各業務須將其有效的商業登記證或有效的分行登記證於每一營業地點展示。<br>
+                        2. Section 12 provides that valid business registration certificate or valid branch registration certificate shall be displayed at every address where business is carried on.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="py-12">
         <div class="container mx-auto px-4">
@@ -1110,37 +1682,71 @@
         const mobileMenu = document.querySelector('.mobile-menu');
         const mobileMenuClose = document.querySelector('.mobile-menu-close');
         
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.add('open');
-            document.body.style.overflow = 'hidden';
-        });
+        if (mobileMenuBtn && mobileMenu && mobileMenuClose) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            mobileMenuClose.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                document.body.style.overflow = 'auto';
+            });
+        }
         
-        mobileMenuClose.addEventListener('click', () => {
-            mobileMenu.classList.remove('open');
-            document.body.style.overflow = 'auto';
+        // Certificate tabs functionality
+        const certificateTabs = document.querySelectorAll('.certificate-tab');
+        const certificateWrappers = document.querySelectorAll('.certificate-content-wrapper');
+        
+        certificateTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetCert = tab.getAttribute('data-cert');
+                
+                // Remove active class from all tabs and wrappers
+                certificateTabs.forEach(t => t.classList.remove('active'));
+                certificateWrappers.forEach(w => w.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding wrapper
+                tab.classList.add('active');
+                document.getElementById(targetCert).classList.add('active');
+            });
         });
         
         // Certificate modal functionality
-        const certificateModal = document.getElementById('certificateModal');
-        const viewCertificateBtn = document.getElementById('viewCertificateBtn');
-        const closeCertificateModal = document.getElementById('closeCertificateModal');
+        const modals = document.querySelectorAll('.certificate-modal');
+        const modalBtns = document.querySelectorAll('[data-modal-btn]');
+        const modalCloseBtns = document.querySelectorAll('[data-close]');
         
-        viewCertificateBtn.addEventListener('click', () => {
-            certificateModal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+        modalBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const modalId = btn.getAttribute('data-modal-btn') + 'Modal';
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
+            });
         });
         
-        closeCertificateModal.addEventListener('click', () => {
-            certificateModal.style.display = 'none';
-            document.body.style.overflow = 'auto';
+        modalCloseBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const modalId = btn.getAttribute('data-close') + 'Modal';
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
         });
         
         // Close modal when clicking outside
-        certificateModal.addEventListener('click', (e) => {
-            if (e.target === certificateModal) {
-                certificateModal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            }
+        modals.forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
         });
         
         // Add random data streams
